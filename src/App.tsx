@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useState } from 'react'
 
+import { API } from './utils/API'
+
 function App (): JSX.Element {
   const [formData, setFormData] = useState<UserInput>({ user: '', age: '', id: '', message: '' })
   const [response, setResponse] = useState<string[]>()
@@ -9,7 +11,7 @@ function App (): JSX.Element {
   function handleGetPost (e: React.FormEvent): void {
     setFormData({ user: '', age: '', id: '', message: '' })
     e.preventDefault()
-    fetch('https://image-generator-server-ypgr-dev.fl0.io/users')
+    fetch(`${API.SERVER_URL}users`)
       .then(async res => await res.json())
       .then(data => {
         setResponse(data)
@@ -17,7 +19,7 @@ function App (): JSX.Element {
       .catch(err => { console.log('ERROR : ', err) })
   }
   function handlePostUser (): void {
-    fetch('https://image-generator-server-ypgr-dev.fl0.io/users'
+    fetch(`${API.SERVER_URL}users`
       , {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -34,7 +36,7 @@ function App (): JSX.Element {
     setFormData({ user: '', age: '', id: '', message: '' })
   }
   function handleGetUserById (): void {
-    fetch(`https://image-generator-server-ypgr-dev.fl0.io/users/${formData.id}`)
+    fetch(`${API.SERVER_URL}users/${formData.id}`)
       .then(async res => await res.json())
       .then(data => {
         setResponse(data)
@@ -42,7 +44,7 @@ function App (): JSX.Element {
     setFormData({ user: '', age: '', id: '', message: '' })
   }
   function handleUpdateUser (): void {
-    fetch(`https://image-generator-server-ypgr-dev.fl0.io/users/${formData.id}`,
+    fetch(`${API.SERVER_URL}users/${formData.id}`,
       {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -57,7 +59,7 @@ function App (): JSX.Element {
   function handleDeleteUser (): void {
     async function deleteUser (): Promise<void> {
       try {
-        const res = await fetch(`https://image-generator-server-ypgr-dev.fl0.io/users/${formData.id}`, {
+        const res = await fetch(`${API.SERVER_URL}users/${formData.id}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' }
         })
@@ -74,7 +76,7 @@ function App (): JSX.Element {
     setIsLoading(true)
     e.preventDefault()
 
-    fetch('https://image-generator-server-ypgr-dev.fl0.io/email', {
+    fetch(`${API.SERVER_URL}email`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
